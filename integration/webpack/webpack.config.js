@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const { AngularCompilerPlugin } = require('@ngtools/webpack')
 const { PurifyPlugin } = require('@angular-devkit/build-optimizer')
+const webpack = require("webpack");
 
 function packageSort(packages) {
   return function sort(left, right) {
@@ -22,25 +23,27 @@ function packageSort(packages) {
 }
 
 module.exports = {
-  entry: {
-    main: './src/main.ts',
-    polyfills: './src/polyfills.ts',
-  },
+  devtool: "source-map",
+  entry: ['ng-zorro-antd'],
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    library: "[name]_[hash]"
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
         loader: '@ngtools/webpack',
+        options: {
+          sourceMap: true
+        }
       },
       {
         test: /\.js$/,
         loader: '@angular-devkit/build-optimizer/webpack-loader',
         options: {
-          sourceMap: false
+          sourceMap: true
         }
       },
     ]
@@ -52,12 +55,18 @@ module.exports = {
     new AngularCompilerPlugin({
       tsConfigPath: path.resolve(__dirname, 'src/tsconfig.app.json'),
       entryModule: path.resolve(__dirname, 'src/app/app.module#AppModule'),
+      sourceMap: true
     }),
-    new PurifyPlugin(),
-    new UglifyJSPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src/index.html'),
-      chunksSortMode: packageSort(['polyfills', 'main']),
+    new PurifyPlugin({
+      sourceMap: true
     }),
+    new UglifyJSPlugin({
+      sourceMap: true
+    }),
+    new webpack.DllPlugin({
+      path: path.join(__dirname, "dist", "[name]-manifest.json"),
+      name: "[name]_[hash]",
+      entryOnly: true
+    })
   ],
 }
