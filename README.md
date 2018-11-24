@@ -1,5 +1,7 @@
 # Webpack-dll-tree-shaking-fail-fesm
 
+__Updates__: This example can only be reproduced from webpack <4.9.0, versions where [`entryOnly: true`](https://github.com/webpack/webpack/pull/7344) is not supported.
+
 This is an example showcasing that webpack fails to tree-shaking FESM5 Angular Package when building dll library.
 
 ## Reproduction
