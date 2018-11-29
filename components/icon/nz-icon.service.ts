@@ -24,7 +24,9 @@ import {
   QuestionCircleOutline,
   RightOutline,
   UploadOutline,
-  UpOutline
+  UpOutline,
+  CaretDownOutline,
+  CaretDownFill
 } from '@ant-design/icons-angular/icons';
 
 export interface NzIconfontOption {
@@ -109,7 +111,9 @@ export class NzIconService extends IconService {
       QuestionCircleOutline,
       RightOutline,
       UploadOutline,
-      UpOutline
+      UpOutline,
+      CaretDownOutline,
+      CaretDownFill
     ];
     this.addIcon(...iconsUsedByZorro);
 
